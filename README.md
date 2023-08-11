@@ -16,6 +16,8 @@
   - 1.Create
   - 2.Update
   - 3.Delete
+
+    
 -출력
   - 4.Read
 - 이것들을 CRUD라고 부른다.
