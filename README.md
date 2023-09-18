@@ -141,6 +141,221 @@ WHERE  조건식
 
 ------------------------------------------------------------------------------------------------------------
 
+# JOIN 
+
+JOIN은 데이터베이스 내의 여러 테이블에서 가져온 레코드를 조합하여 하나의 테이블이나 결과 집합으로 표현해 줍니다.
+
+이러한 JOIN은 보통 SELECT 문과 함께 자주 사용됩니다.
+
+ 
+
+표준 SQL에서는 레코드를 조합하는 방식에 따라 JOIN을 다음과 같이 구분합니다.
+
+ 
+
+1. INNER JOIN
+
+2. LEFT JOIN
+
+3. RIGHT JOIN
+   
+------------------------------------------------------------------------------------------------------------
+
+## INNER JOIN
+
+INNER JOIN은 ON 절과 함께 사용되며, ON 절의 조건을 만족하는 데이터만을 가져옵니다.
+
+```
+1. 첫번째테이블이름
+
+INNER JOIN 두번째테이블이름
+
+ON 조건
+
+2. 첫번째테이블이름
+
+JOIN 두번째테이블이름
+
+ON 조건
+```
+ 
+
+ON 절에서는 WHERE 절에서 사용할 수 있는 모든 조건을 사용할 수 있습니다.
+
+표준 SQL과는 달리 MySQL에서는 JOIN, INNER JOIN, CROSS JOIN이 모두 같은 의미로 사용됩니다.
+
+ 
+
+다음 예제는 Reservation 테이블의 Name 필드와 Customer 테이블의 Name 필드가 서로 일치하는 레코드만을 INNER JOIN으로 가져오는 예제입니다.
+
+
+```
+1. SELECT *
+
+FROM Reservation
+
+INNER JOIN Customer
+
+ON Reservation.Name = Customer.Name;
+
+2. SELECT *
+
+FROM Reservation
+
+JOIN Customer
+
+ON Reservation.Name = Customer.Name;
+```
+
+
+
+- INNER JOIN의 결과를 벤 다이어그램으로 나타내면 다음과 같습니다.
+
+ 
+![img_mysql_inner_join](https://github.com/parkminseok56/Oracle/assets/133790403/28749f74-cdaa-4519-80ca-f72550fd8a89)
+
+
+ 
+
+ 
+
+INNER JOIN의 경우에는 앞서 살펴본 표준 SQL 방식과는 별도로 MySQL에서만 사용할 수 있는 방식이 따로 존재합니다.
+
+다음 예제는 앞서 살펴본 INNER JOIN 예제와 같은 실행 결과를 보여줍니다.
+
+
+```
+SELECT *
+
+FROM Reservation, Customer
+
+WHERE Reservation.Name = Customer.Name;
+```
+ 
+
+위의 예제처럼 테이블의 이름이 길거나 복잡한 경우에는 별칭(alias)을 사용하여 SQL 구문을 간략화할 수 있습니다.
+
+ 
+
+다음 예제는 앞의 예제를 별칭(alias)을 사용하여 간략화한 예제입니다.
+
+```
+SELECT *
+
+FROM Reservation AS r, Customer AS c
+
+WHERE r.Name = c.Name;
+```
+
+## LEFT JOIN
+
+LEFT JOIN은 첫 번째 테이블을 기준으로, 두 번째 테이블을 조합하는 JOIN입니다. 
+
+ 
+
+이때 ON 절의 조건을 만족하지 않는 경우에는 첫 번째 테이블의 필드 값은 그대로 가져옵니다.
+
+하지만 해당 레코드의 두 번째 테이블의 필드 값은 모두 NULL로 표시됩니다.
+
+
+
+```
+첫번째테이블이름
+
+LEFT JOIN 두번째테이블이름
+
+ON 조건
+```
+ 
+
+ON 절에서는 WHERE 절에서 사용할 수 있는 모든 조건을 사용할 수 있습니다.
+
+ 
+
+다음 예제는 Reservation 테이블의 Name 필드를 기준으로 Customer 테이블의 Name 필드와 일치하는 레코드만을 LEFT JOIN으로 가져온 후, 그 중에서 ReserveDate 필드의 값이 2016년 02월 01일 이후인 레코드만을 선택하는 예제입니다.
+
+```
+SELECT *
+
+FROM Reservation
+
+LEFT JOIN Customer
+
+ON Reservation.Name = Customer.Name
+
+WHERE ReserveDate > '2016-02-01';
+```
+
+
+위의 예제에서 두 개의 Name 값이 일치하면, INNER JOIN과 같이 두 테이블의 모든 필드를 그대로 가져옵니다.
+
+하지만 두 개의 Name 값이 일치하지 않는 경우에는 Customer 테이블의 모든 필드를 NULL로 표시됩니다.
+
+ 
+
+LEFT JOIN의 결과를 벤 다이어그램으로 나타내면 다음과 같습니다.
+
+ 
+![img_mysql_left_join](https://github.com/parkminseok56/Oracle/assets/133790403/29511a06-2d4b-471d-9858-32cc1c45e732)
+
+
+
+ 
+
+## RIGHT JOIN
+
+RIGHT JOIN은 LEFT 조인과는 반대로 두 번째 테이블을 기준으로, 첫 번째 테이블을 조합하는 JOIN입니다. 
+
+ 
+
+이때 ON 절의 조건을 만족하지 않는 경우에는 두 번째 테이블의 필드 값은 그대로 가져옵니다.
+
+하지만 해당 레코드의 첫 번째 테이블의 필드 값은 모두 NULL로 표시됩니다.
+
+문법
+
+```
+
+첫번째테이블이름
+
+LEFT JOIN 두번째테이블이름
+
+ON 조건
+
+```
+ 
+
+ON 절에서는 WHERE 절에서 사용할 수 있는 모든 조건을 사용할 수 있습니다.
+
+ 
+
+다음 예제는 Customer 테이블의 Name 필드를 기준으로 Reservation 테이블의 Name 필드와 일치하는 레코드만을 RIGHT JOIN으로 가져오는 예제입니다.
+
+
+```
+SELECT *
+
+FROM Reservation
+
+RIGHT JOIN Customer
+
+ON Reservation.Name = Customer.Name;
+```
+
+ 
+
+위의 예제에서 두 개의 Name 값이 일치하면, INNER JOIN과 같이 두 테이블의 모든 필드를 그대로 가져옵니다.
+
+하지만 두 개의 Name 값이 일치하지 않는 경우에는 Reservation 테이블의 모든 필드를 NULL로 표시됩니다.
+
+ 
+
+RIGHT JOIN의 결과를 벤 다이어그램으로 나타내면 다음과 같습니다.
+
+![img_mysql_right_join](https://github.com/parkminseok56/Oracle/assets/133790403/ac8e81bb-f4e2-4672-bc3b-ff791b09cca8)
+
+ ------------------------------------------------------------------------------------------------------------
+
 
 # JDBC
 
