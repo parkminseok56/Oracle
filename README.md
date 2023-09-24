@@ -203,6 +203,136 @@ WHERE  조건식
 조건식을 주지 않으면 전체 로우가 영향을 미치니 조심해서 사용하도록 합니다.
 
 ------------------------------------------------------------------------------------------------------------
+## 서브쿼리(subquery)
+
+- 서브쿼리(subquery)란 다른 쿼리 내부에 포함되어 있는 SELETE 문을 의미합니다.
+
+- 서브쿼리를 포함하고 있는 쿼리를 외부쿼리(outer query)라고 부르며, 서브쿼리는 내부쿼리(inner query)라고도 부릅니다.
+
+- 서브쿼리는 반드시 괄호(())로 감싸져 있어야만 합니다.
+
+ 
+
+- MySQL에서 서브쿼리를 포함할 수 있는 외부쿼리는 SELECT, INSERT, UPDATE, DELETE, SET, DO 문이 있습니다.
+
+- 이러한 서브쿼리는 또 다시 다른 서브쿼리 안에 포함될 수 있습니다.
+
+ 
+
+- 다음 예제는 주소가 서울인 고객이 예약한 예약 정보만을 선택하는 예제입니다.
+
+```
+① SELECT ID, ReserveDate, RoomNum
+
+   FROM Reservation
+
+② WHERE Name IN (SELECT Name
+
+                  FROM Customer
+
+                  WHERE Address = '서울')
+```
+
+
+
+ 
+
+위의 예제에서 ①번 라인의 SELECT 문은 외부쿼리이며, ②번 라인의 SELECT 문은 서브쿼리입니다.
+
+ 
+
+우선 ②번 라인의 서브쿼리가 먼저 실행되어 Customer 테이블의 Address 필드의 값이 '서울'인 레코드의 Name 필드를 모두 선택합니다.
+
+그리고서 ①번 라인의 외부쿼리가 실행되어 Reservation 테이블에서 서브쿼리에 의해 선택된 결과 집합에 포함된 Name 필드와 일치하는 레코드만을 다시 선택합니다.
+
+ 
+
+
+
+## 서브쿼리의 특징
+
+- 서브쿼리를 사용하면 다음과 같은 장점을 얻을 수 있습니다.
+
+ 
+
+- 1. 서브쿼리는 쿼리를 구조화시키므로, 쿼리의 각 부분을 명확히 구분할 수 있게 해줍니다.
+
+- 2. 서브쿼리는 복잡한 JOIN이나 UNION과 같은 동작을 수행할 수 있는 또 다른 방법을 제공합니다.
+
+- 3. 서브쿼리는 복잡한 JOIN이나 UNION 보다 좀 더 읽기 편합니다.
+
+ 
+
+다음 예제는 위에서 살펴본 주소가 서울인 고객이 예약한 예약 정보만을 선택하는 예제를 JOIN을 사용하여 표현한 것입니다.
+
+쿼리가 복잡한 경우에는 JOIN이나 UNION을 사용하는 것보다 서브쿼리를 사용하는 것이 가독성 측면에서 좋을 수 있습니다.
+
+```
+SELECT r.ID, r.ReserveDate, r.RoomNum
+
+FROM Reservation AS r, Customer AS c
+
+WHERE c.Address = '서울' AND r.Name = c.Name;
+```
+ 
+
+하지만 서브쿼리에서 사용된 테이블이나 그 결과 집합은 수정할 수 없습니다.
+
+잘못된 예제
+```
+UPDATE Reservation ...
+
+WHERE ReverseDate = (SELECT ... FROM Reservation ...);
+
+FROM 절의 서브쿼리
+```
+
+- 서브쿼리는 SELECT 문의 FROM 절에서도 사용할 수 있습니다.
+
+- 이때 서브쿼리에 의해 선택된 결과 집합은 FROM 절에서 하나의 테이블로써 사용됩니다.
+
+
+문법
+
+```
+SELECT ...
+
+FROM (서브쿼리) [AS] 이름
+
+...
+```
+ 
+
+SELECT 문의 FROM 절에서 사용되는 모든 테이블에는 이름이 필요합니다.
+
+따라서 FROM 절에서 사용되는 서브쿼리는 위의 문법처럼 반드시 이름을 정의해야 합니다.
+
+ 
+
+예제
+```
+   SELECT Name, ReservedRoom
+
+① FROM (SELECT Name, ReserveDate, (RoomNum + 1) AS ReservedRoom
+
+         FROM Reservation
+
+②       WHERE RoomNum > 1001) AS ReservationInfo;
+```
+
+
+ 
+
+- 위의 예제는 우선 ①번 라인의 서브쿼리가 먼저 실행됩니다.
+
+- 해당 서브쿼리는 Reservation 테이블에서 RoomNum 필드의 값이 1001 이상인 레코드를 찾은 후에, RoomNum 필드값을 1씩 증가시킵니다.
+
+- 그리고 해당 결과 집합은 ②번 라인에서 ReservationInfo라는 이름의 임시 테이블로 만들어집니다.
+
+
+- 외부쿼리에서는 이렇게 만들어진 임시 테이블에서 Name, ReservedRoom 필드만을 선택하게 됩니다.
+
+------------------------------------------------------------------------------------------------------------
 
 # JOIN 
 
