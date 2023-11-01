@@ -3,7 +3,8 @@
    
  - 발전순서:파일-> 스프레드시트-> 데이터베이스
 
--차이점
+- 차이점
+  
  - 스프레드시트
    - 클릭과 같은 작용으로 데이터를 조작한다.
  - 데이터베이스
@@ -321,9 +322,6 @@ SELECT 문의 FROM 절에서 사용되는 모든 테이블에는 이름이 필�
 ②       WHERE RoomNum > 1001) AS ReservationInfo;
 ```
 
-
- 
-
 - 위의 예제는 우선 ①번 라인의 서브쿼리가 먼저 실행됩니다.
 
 - 해당 서브쿼리는 Reservation 테이블에서 RoomNum 필드의 값이 1001 이상인 레코드를 찾은 후에, RoomNum 필드값을 1씩 증가시킵니다.
@@ -342,11 +340,9 @@ JOIN은 데이터베이스 내의 여러 테이블에서 가져온 레코드를 
 이러한 JOIN은 보통 SELECT 문과 함께 자주 사용됩니다.
 
  
-
 표준 SQL에서는 레코드를 조합하는 방식에 따라 JOIN을 다음과 같이 구분합니다.
 
  
-
 1. INNER JOIN
    
 2. LEFT JOIN
@@ -444,17 +440,11 @@ JOIN Customer
 ON Reservation.Name = Customer.Name;
 ```
 
-
-
 - INNER JOIN의 결과를 벤 다이어그램으로 나타내면 다음과 같습니다.
 
  
 ![img_mysql_inner_join](https://github.com/parkminseok56/Oracle/assets/133790403/28749f74-cdaa-4519-80ca-f72550fd8a89)
 
-
- 
-
- 
 
 INNER JOIN의 경우에는 앞서 살펴본 표준 SQL 방식과는 별도로 MySQL에서만 사용할 수 있는 방식이 따로 존재합니다.
 
@@ -469,7 +459,6 @@ FROM Reservation, Customer
 WHERE Reservation.Name = Customer.Name;
 ```
  
-
 위의 예제처럼 테이블의 이름이 길거나 복잡한 경우에는 별칭(alias)을 사용하여 SQL 구문을 간략화할 수 있습니다.
 
  
@@ -495,7 +484,6 @@ LEFT JOIN은 첫 번째 테이블을 기준으로, 두 번째 테이블을 조�
 하지만 해당 레코드의 두 번째 테이블의 필드 값은 모두 NULL로 표시됩니다.
 
 
-
 ```
 첫번째테이블이름
 
@@ -504,11 +492,9 @@ LEFT JOIN 두번째테이블이름
 ON 조건
 ```
  
-
 ON 절에서는 WHERE 절에서 사용할 수 있는 모든 조건을 사용할 수 있습니다.
 
  
-
 다음 예제는 Reservation 테이블의 Name 필드를 기준으로 Customer 테이블의 Name 필드와 일치하는 레코드만을 LEFT JOIN으로 가져온 후, 그 중에서 ReserveDate 필드의 값이 2016년 02월 01일 이후인 레코드만을 선택하는 예제입니다.
 
 ```
@@ -535,9 +521,6 @@ LEFT JOIN의 결과를 벤 다이어그램으로 나타내면 다음과 같습�
  
 ![img_mysql_left_join](https://github.com/parkminseok56/Oracle/assets/133790403/29511a06-2d4b-471d-9858-32cc1c45e732)
 
-
-
- 
 
 ## RIGHT JOIN
 
